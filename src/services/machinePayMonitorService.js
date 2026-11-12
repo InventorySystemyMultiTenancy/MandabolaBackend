@@ -238,6 +238,7 @@ export async function listarLeitoresDaConta() {
     conta,
     leitores: leituras.map((l) => ({
       posId: l.posId,
+      usrId: l.usrId || conta?.usrId || null,
       nomePonto: l.nomePonto,
       cliente: l.cliente,
       online: l.online,

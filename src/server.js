@@ -208,6 +208,9 @@ const startServer = async () => {
       await removerBolinhasAutomaticas();
     }
 
+    // Máquina pode existir sem loja (importada da Machine Pay, loja definida depois)
+    await sequelize.query('ALTER TABLE maquinas ALTER COLUMN "lojaId" DROP NOT NULL');
+
     // Comissão do ponto (Controle de Arrecadação)
     await sequelize.query(
       "ALTER TABLE lojas ADD COLUMN IF NOT EXISTS percentual_comissao DECIMAL(5,2) NOT NULL DEFAULT 0",

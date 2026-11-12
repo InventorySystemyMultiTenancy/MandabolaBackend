@@ -10,7 +10,9 @@ export const listarMaquinas = async (req, res) => {
     const { lojaId, incluirInativas, incluirUltimaMovimentacao } = req.query;
     const where = {};
 
-    if (lojaId) {
+    if (lojaId === "sem") {
+      where.lojaId = null;
+    } else if (lojaId) {
       where.lojaId = lojaId;
     }
 
@@ -113,10 +115,8 @@ export const criarMaquina = async (req, res) => {
       regiao,
     } = req.body;
 
-    if (!codigo || !lojaId) {
-      return res
-        .status(400)
-        .json({ error: "Código e ID da loja são obrigatórios" });
+    if (!codigo) {
+      return res.status(400).json({ error: "Código da máquina é obrigatório" });
     }
 
     const horario = normalizarHorarioFuncionamento(horarioFuncionamento);
@@ -149,7 +149,7 @@ export const criarMaquina = async (req, res) => {
       codigo,
       nome,
       tipo,
-      lojaId,
+      lojaId: lojaId || null,
       capacidadePadrao: capacidadePadrao || 100,
       valorFicha: valorFicha || 5.0,
       fichasNecessarias: fichasNecessarias || null,
@@ -265,7 +265,7 @@ export const atualizarMaquina = async (req, res) => {
       codigo: codigo ?? maquina.codigo,
       nome: nome ?? maquina.nome,
       tipo: tipo ?? maquina.tipo,
-      lojaId: lojaId ?? maquina.lojaId,
+      lojaId: lojaId === undefined ? maquina.lojaId : lojaId || null,
       capacidadePadrao: capacidadePadrao ?? maquina.capacidadePadrao,
       valorFicha: valorFicha ?? maquina.valorFicha,
       fichasNecessarias: fichasNecessarias ?? maquina.fichasNecessarias,

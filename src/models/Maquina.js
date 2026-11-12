@@ -25,8 +25,10 @@ const Maquina = sequelize.define(
       comment: "Ex: Grua, TakeBall",
     },
     lojaId: {
+      // Opcional: máquinas importadas da Machine Pay nascem sem loja e o
+      // usuário associa depois.
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "lojas",
         key: "id",
